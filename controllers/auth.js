@@ -1,10 +1,14 @@
 const bcrypt = require('bcryptjs')
-
-const signUp = (req, res) => {
+const { User } = require('../model')
+const signUp = async (req, res) => {
     try {
         const { body } = req
-
-        return res.send({ success: true })
+        let addUser = new User(body)
+        addUser.save().then((result) => {
+            return res.send({ success: true, result })
+        }).catch((err) => {
+            return res.send({ success: false, message: 'Something Went Wrong!' })
+        })
     } catch (e) {
         return res.send({ success: false, message: 'Something Went Wrong!' })
     }
